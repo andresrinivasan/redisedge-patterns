@@ -1,2 +1,2 @@
 *.rdb
-_pycache_/
+**/__pycache__
