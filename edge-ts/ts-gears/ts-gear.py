@@ -1,3 +1,6 @@
+# import sys
+# raise Exception(sys.path)
+
 from gearsclient import GearsBuilder as GB
 import redis    
 
