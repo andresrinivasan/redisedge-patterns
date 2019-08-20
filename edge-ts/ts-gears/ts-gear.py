@@ -1,7 +1,7 @@
 # import sys
 # raise Exception(sys.path)
 
-from gearsclient import GearsBuilder as GB
+from gearsclient import GearsRemoteBuilder as GB
 import redis    
 
 def addToTS(r):
@@ -21,17 +21,17 @@ def publish(r):
 conn = redis.Redis(host='localhost', port=6379)
 
 conn.flushall()
-conn.execute_command("TS.CREATE", "temp:raw", "RETENTION", 5000)
-conn.execute_command("TS.CREATE", "temp:avg:1s", "RETENTION", 300000)
-conn.execute_command("TS.CREATERULE", "temp:raw", "temp:avg:1s", "AGGREGATION", "avg", 1000)
+#conn.execute_command("TS.CREATE", "temp:raw", "RETENTION", 5000)
+# conn.execute_command("TS.CREATE", "temp:avg:1s", "RETENTION", 300000)
+# conn.execute_command("TS.CREATERULE", "temp:raw", "temp:avg:1s", "AGGREGATION", "avg", 1000)
 
-GB('StreamReader') \
-    .map(addToTS) \
-    .map(calcSMA) \
-    .map(publish)
+# GB('StreamReader') \
+#     .map(addToTS) \
+#     .map(calcSMA) \
+#     .map(publish)
 
-GB.register('ingress')
+# GB.register('ingress')
 
-## How come gearsclient isn't part of the module install?
-## Do I really need foreach when map() + return does the same thing and is more consistent with OPP
-## How do I test outside of Gears?
+# ## How come gearsclient isn't part of the module install?
+# ## Do I really need foreach when map() + return does the same thing and is more consistent with OPP
+# ## How do I test outside of Gears?
