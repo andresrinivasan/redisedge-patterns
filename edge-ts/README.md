@@ -6,33 +6,26 @@ If we assume the data is noisy, we can use time series to reduce the noise befor
 
 ## Dependencies
 
+* Redis 5 (for redis-cli command)
 * RedisEdge
+* Python 3
 
-## Install
+Note this is coded against RedisGears 0.3.1 which is part of RedisEdge as of this writing.
+
+## Setup
 
 ``` sh
-docker pull redislabs/redisedge
+make setup
 ```
 
 ## Start
 
 ``` sh
-docker run --rm -p 6379:6379 \
-        --mount type=bind,src=$(pwd)/ts.conf,dst=/etc/ts.conf \
-        --mount type=bind,src=$(pwd)/ts-gears,dst=/etc/ts-gears \
-        --mount type=bind,src=/Users/andresrinivasan/.local/share/virtualenvs/redisedge-patterns-l-jFYGhY/lib/python3.7/site-packages,dst=/lib/python/site-packages \
-        --mount type=bind,src=$(pwd)/,dst=/data/ \
-        redislabs/redisedge /etc/ts.conf
+make start
 ```
 
-## PoC
+## Test
 
 ``` sh
-TS.CREATE temp:raw RETENTION 5000
-TS.CREATE temp:avg:1s RETENTION 300000
-TS.CREATERULE temp:raw temp:avg:1s AGGREGATION avg 1000
-```
-
-``` sh
-while :; do redis-cli XADD ingress '*' MAXLEN ~ 1000 t $RANDOM; done
+make test
 ```

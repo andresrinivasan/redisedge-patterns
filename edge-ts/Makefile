@@ -1,20 +1,24 @@
-.PHONY: all init start pull clean
+.PHONY: no-default all setup start start-redis-edge clean
 
-all: start
+no-default:
 
-pull:
+all:
+
+setup:
 	docker pull redislabs/redisedge
 
-init:
-	./init-redisedge.sh
+start: start-redis-edge
+	cd gears && python ts-init.py
 
-start:
-	docker run --rm -p 6379:6379 \
+start-redis-edge:
+	docker run -d --rm -p 6379:6379 \
 	--mount type=bind,src=$(CURDIR)/ts.conf,dst=/etc/ts.conf \
-	--mount type=bind,src=$(CURDIR)/ts-gears,dst=/etc/ts-gears \
-	--mount type=bind,src=/Users/andresrinivasan/.local/share/virtualenvs/redisedge-patterns-l-jFYGhY/lib/python3.7/site-packages,dst=/lib/python/site-packages \
-	--mount type=bind,src=/tmp/lib/python3.7/site-packages,dst=/data \
+	--mount type=bind,src=$(CURDIR)/gears,dst=/etc/gears \
+	--mount type=bind,src=$(CURDIR),dst=/data \
 	redislabs/redisedge /etc/ts.conf
+
+test:
+	tools/add-random-data
 
 clean:
 	redis-cli flushall

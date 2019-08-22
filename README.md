@@ -8,7 +8,7 @@ We usually use one or Streams for ingress. This makes it easier to connect the d
 
 ## Data Orchestration
 
-RedisGears registers for events (new data) on Streams and then takes appropriate action. This could something entirely covered by the Gear or it could be a handoff to another data structure.
+RedisGears registers for events (new data) on Streams and then takes appropriate action. This could be something entirely covered by the Gear or it could be a handoff to another data structure.
 
 ### IFTTT
 

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+while :; do redis-cli XADD ingress MAXLEN '~' 1000 '*' t $RANDOM; done
