@@ -1,4 +1,4 @@
-# RedisEgdge Patterns
+# RedisEdge Patterns
 
 For IoT/Edge, use patterns have emerged around data ingress, processing, event detection, data egress. The intent here is to share example(s) of those patterns
 

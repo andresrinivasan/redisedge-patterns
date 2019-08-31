@@ -11,14 +11,17 @@ start: start-redis-edge
 	cd gears && python ts-init.py
 
 start-redis-edge:
-	docker run -d --rm -p 6379:6379 \
-	--mount type=bind,src=$(CURDIR)/ts.conf,dst=/etc/ts.conf \
-	--mount type=bind,src=$(CURDIR)/gears,dst=/etc/gears \
-	--mount type=bind,src=$(CURDIR),dst=/data \
+	--mkdir data 2>/dev/null
+	docker run --name RedisEdge --user $(shell id -u) -d --rm -p 6379:6379 \
+	--mount type=bind,src=$(CURDIR)/ts.conf,dst=/etc/ts.conf,readonly \
+	--mount type=bind,src=$(CURDIR)/data,dst=/data \
 	redislabs/redisedge /etc/ts.conf
+
+stop-redis-edge:
+	docker stop RedisEdge
 
 test:
 	tools/add-random-data
 
-clean:
-	redis-cli flushall
+clean: stop-redis-edge
+	rm -rf data
