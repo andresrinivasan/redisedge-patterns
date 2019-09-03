@@ -1,6 +1,7 @@
 def addToTS(r):
-    execute("TS.ADD", "temp:raw", "*", r["t"])       ## Intellicode doesn't know about execute
-    return r
+    if r["device"] == 'TemperatureHumiditySensor' and r["name"] == 'Temperature':
+        execute("TS.ADD", "temp:raw", "*", r["value"])
+        return r
 
 def calcSMA(r):
     avgs = execute("TS.RANGE", "temp:avg:1s", 0, -1)
@@ -12,7 +13,7 @@ def calcSMA(r):
     return sma
 
 def publish(r):
-    execute("XADD", "egress", "*", "sma", r)
+    execute("XADD", "event-egress-stream", "*", "sma", r)
 
 execute("flushall")
 execute("TS.CREATE", "temp:raw", "RETENTION", 5000)
@@ -24,7 +25,7 @@ gb = gearsCtx('StreamReader') \
     .map(calcSMA) \
     .map(publish)
 
-gb.register('ingress')
+gb.register('event-ingress-stream')
 
 # ## Do I really need foreach when map() + return does the same thing and is more consistent with OPP
 # ## How do I test outside of Gears?

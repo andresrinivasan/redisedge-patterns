@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-while :; do redis-cli XADD ingress MAXLEN '~' 1000 '*' t $RANDOM; done
+while :
+do
+    CREATED=`date +%s%3N`
+    redis-cli XADD event-ingress-stream MAXLEN '~' 1000 '*' created $CREATED device TemperatureHumiditySensor name Temperature value $RANDOM
+    sleep .250
+done

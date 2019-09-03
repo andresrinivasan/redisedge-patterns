@@ -8,7 +8,7 @@ setup:
 	docker pull redislabs/redisedge
 
 start: start-redis-edge
-	cd gears && python ts-init.py
+	cd gears && python3 ts-init.py
 
 start-redis-edge:
 	docker run -d --rm -p 6379:6379 \
