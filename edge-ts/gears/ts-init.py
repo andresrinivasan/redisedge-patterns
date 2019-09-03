@@ -7,7 +7,13 @@ def clean(conn):
 
     try:
         conn.execute_command("TS.DELETERULE", "temp:raw", "temp:avg:1s")
+    except:
+        None
+    try:
         conn.delete("temp:raw", "temp:avg:1s")
+    except:
+        None
+    try:
         conn.delete("gears-status")
     except:
         None

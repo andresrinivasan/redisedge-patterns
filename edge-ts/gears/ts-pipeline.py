@@ -23,5 +23,3 @@ gb.register('ingress')
 
 execute("hmset", "gears-status", "name", "ts-pipeline", "status", "loaded")
 
-# ## Do I really need foreach when map() + return does the same thing and is more consistent with OPP
-# ## How do I test outside of Gears?
