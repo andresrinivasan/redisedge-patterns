@@ -14,17 +14,14 @@ def calcSMA(r):
 def publish(r):
     execute("XADD", "egress", "*", "sma", r)
 
-execute("flushall")
-execute("TS.CREATE", "temp:raw", "RETENTION", 5000)
-execute("TS.CREATE", "temp:avg:1s", "RETENTION", 300000)
-execute("TS.CREATERULE", "temp:raw", "temp:avg:1s", "AGGREGATION", "avg", 1000)
-
 gb = gearsCtx('StreamReader') \
     .map(addToTS) \
     .map(calcSMA) \
     .map(publish)
 
 gb.register('ingress')
+
+execute("hmset", "gears-status", "name", "ts-pipeline", "status", "loaded")
 
 # ## Do I really need foreach when map() + return does the same thing and is more consistent with OPP
 # ## How do I test outside of Gears?

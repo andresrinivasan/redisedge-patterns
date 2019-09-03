@@ -1,4 +1,4 @@
-.PHONY: no-default all setup start start-redis-edge clean
+.PHONY: no-default all setup start start-redis-edge stop-redis-edge clean clean-db
 
 no-default:
 
@@ -8,7 +8,8 @@ setup:
 	docker pull redislabs/redisedge
 
 start: start-redis-edge
-	cd gears && python ts-init.py
+	cd gears && python ts-init.py init
+	cd gears && python ts-init.py load
 
 start-redis-edge:
 	--mkdir data 2>/dev/null
@@ -23,5 +24,9 @@ stop-redis-edge:
 test:
 	tools/add-random-data
 
-clean: stop-redis-edge
+clean: clean-db stop-redis-edge
 	rm -rf data
+
+clean-db:
+	cd gears && python ts-init.py clean
+
