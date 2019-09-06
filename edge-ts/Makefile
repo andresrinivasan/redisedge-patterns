@@ -1,6 +1,6 @@
-PYTHON = python3
-
 .PHONY: no-default all setup start start-redis-edge stop-redis-edge clean clean-db
+
+PYTHON = python3
 
 no-default:
 
